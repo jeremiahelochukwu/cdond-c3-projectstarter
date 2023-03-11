@@ -32,38 +32,70 @@ commands:
               exit 1
             fi
             
+# jobs:
+#   build-frontend:
+#     docker:
+#       - image: circleci/node:13.8.0
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           keys: [frontend-build]
+#       - run:
+#           name: Build front-end
+#           command: |
+#             # Your code here
+#             exit 1
+#       - save_cache:
+#           paths: [frontend/node_modules]
+#           key: frontend-build
+
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys:
+            - frontend-deps-{{ checksum "frontend/package-lock.json" }}
       - run:
-          name: Build front-end
+          name: Install dependencies
           command: |
-            # Your code here
-            exit 1
+            cd frontend
+            npm install
+      - run:
+          name: Build frontend
+          command: |
+            cd frontend
+            npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build
-
+          key: frontend-deps-{{ checksum "frontend/package-lock.json" }}
+  
   build-backend:
     docker:
-      - image: circleci/node:13.8.0
+    - image: cimg/node:13.8.0
     steps:
-      - checkout
-      - restore_cache:
-          keys: [backend-build]
-      - run:
-          name: Back-end build
-          command: |
-             # Your code here
-             exit 1
-      - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
+    - checkout
+    - restore_cache:
+       keys:
+         - backend-deps-{{ checksum "backend/package-lock.json" }}
+    - run:
+        name: Install dependencies
+        command: |
+          cd backend
+          npm install
+    - run:
+        name: Build backend
+        command: |
+          cd backend
+          npm run build
+    - save_cache:
+        paths: [backend/node_modules]
+        key: backend-deps-{{ checksum "backend/package-lock.json" }}
+
+  
+ 
 
   test-frontend:
     docker:
