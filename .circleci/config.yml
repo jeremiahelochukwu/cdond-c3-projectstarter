@@ -1,6 +1,41 @@
 version: 2.1
 
-# commands:
+commands:
+  install_awscli:
+    description: Install AWSCLI-v2, TAR, GZIP & CURL
+    steps:
+      - run:
+          name: Install AWSCLI-v2, TAR, GZIP & CURL
+          command: |
+            sudo apt install -y tar gzip curl
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+  install_ansible:
+    description: Install Ansible
+    steps:
+      - run:
+          name: Install Ansible
+          command: |
+            python3 -m pip install --user ansible
+            
+  install_nodejs:
+    description: Install Node.js 13.8.0
+    steps:
+      - run:
+          name: Install Node.js 13.8.0
+          command: |
+            # Install Node.js LTS version as our base Node.js version
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+            sudo apt install -y nodejs
+            # Use n version manager to use Node.js v13.8.0
+            sudo npm install --global n
+            sudo n 13.8.0
+
+
+
+
 #   destroy-environment:
 #     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
 #     parameters:
@@ -141,15 +176,13 @@ jobs:
        keys:
          - frontend-deps-{{ checksum "frontend/package-lock.json" }}
     - run:
-        name: Install dependencies
-        command: |
-          cd frontend
-          npm install
-    - run:
         name: Scan frontend packages
         command: |
           cd frontend
-          npm audit --audit-level=critical
+          npm install                       
+          npm audit fix --force --audit-level=critical
+          npm audit fix --force --audit-level=critical
+# npm audit --audit-level=critical 
 
   scan-backend:
     docker:
@@ -160,30 +193,14 @@ jobs:
        keys:
          - backend-deps-{{ checksum "backend/package-lock.json" }}
     - run:
-        name: Install dependencies
-        command: |
-          cd backend
-          npm install
-    - run:
-        name: Scan backend packages
-        command: |
-          cd backend
-          npm audit --audit-level=critical                      
-  # scan-frontend:
-  #   docker:
-  #     # Docker image here
-  #   steps:
-  #     # Checkout code from git
-  #     # Restore from cache
-  #     # Your job code here
-
-  # scan-backend:
-  #   docker:
-  #     # Docker image here
-  #   steps:
-  #     # Checkout code from git
-  #     # Restore from cache
-  #     # Your job code here
+          name: Scan backend packages
+          command: |
+            cd backend
+            npm install 
+            npm audit fix --force --audit-level=critical
+            npm audit fix --force --audit-level=critical
+# npm audit --audit-level=critical
+ 
 
   # deploy-infrastructure:
   #   docker:
