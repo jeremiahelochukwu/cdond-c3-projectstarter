@@ -13,7 +13,6 @@
 
   pre_tasks:
     - name: 'wait 600 seconds for target connection to become reachable/usable.'
-      # Your code here
       wait_for_connection:
         timeout: 600
 
@@ -32,12 +31,13 @@
     - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES') }}"
     - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS') }}"
     - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
-    - TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
+    - TYPEORM_PORT: 5432    
     - TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
     - TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
     - TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
     # Add more env vars here
+    # - TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
 
   roles:
     - configure-server
-    - configure-prometheus-node-exporter
+    # - configure-prometheus-node-exporter
