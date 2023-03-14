@@ -234,6 +234,7 @@ jobs:
       # Here's where you will add some code to rollback on failure
 
  
+ 
   configure-infrastructure:
     docker:
     - image: cimg/python:3.10
@@ -384,7 +385,7 @@ jobs:
             if curl -s $FRONTEND_WEBSITE | grep "Welcome"
             then
               # This is the intentional error, if "Welcome" is indeed in the response this step will exit with exit code 1
-              exit 0
+              exit 1
             else
               exit 1
             fi

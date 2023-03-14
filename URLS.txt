@@ -4,6 +4,7 @@ URLS.txt
 https://github.com/jeremiahelochukwu/cdond-c3-projectstarter.git
 
 [URL02]
+http://udapeople-9a6d46f.s3-website-us-east-1.amazonaws.com
 
 [URL03]
 http://d1v17dxxhkjv03.cloudfront.net
