@@ -67,7 +67,7 @@ commands:
           command: |
             SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_id >>)
             # Logic for reverting the database state
-            if (( $SUCCESS == 1 )); then
+            if [[ "${SUCCESS}" == "1" ]]; then
               cd ~/project/backend
               npm install
               npm run build
