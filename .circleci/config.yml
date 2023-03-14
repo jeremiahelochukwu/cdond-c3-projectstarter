@@ -376,6 +376,7 @@ jobs:
             else
               exit 1
             fi
+      
       - run:
           name: Frontend smoke test.
           command: |
@@ -387,9 +388,6 @@ jobs:
             else
               exit 1
             fi
-
-
-     
 
 # rolls back; should migration fail
       - destroy-environment
